@@ -13,10 +13,11 @@ import kotlinx.coroutines.flow.Flow
 class MainViewModel(private val apiService: ApiService) : ViewModel() {
 
     fun getItems(): Flow<PagingData<Model>> {
-        return Pager(PagingConfig(pageSize = 20)) {
-            ItemPagingSource(apiService)
-        }.flow
+        return Pager(PagingConfig(pageSize =20, prefetchDistance = 10,  enablePlaceholders = false,initialLoadSize = 1), pagingSourceFactory = { ItemPagingSource(apiService) })
+            .flow
             .cachedIn(viewModelScope)
     }
+
+
 
 }
